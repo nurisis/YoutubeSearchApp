@@ -1,0 +1,4 @@
+rootProject.name='YoutubeSearchApp'
+include ':app'
+include ':data'
+include ':entity'
