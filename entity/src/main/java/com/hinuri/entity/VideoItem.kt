@@ -7,7 +7,6 @@ data class VideoItem(
     @SerializedName("etag") val etag: String,
     @SerializedName("id") val id: VideoId,
     @SerializedName("snippet") val snippet: VideoSnippet,
-    @SerializedName("channelTitle") val channelTitle: String,
     @SerializedName("liveBroadcastContent") val liveBroadcastContent: String
 ) : Serializable
 
@@ -16,11 +15,13 @@ data class VideoSnippet(
     @SerializedName("channelId") val channelId: String,
     @SerializedName("title") val title: String,
     @SerializedName("description") val description: String,
-    @SerializedName("thumbnails") val thumbnails: VideoThumbnail
+    @SerializedName("thumbnails") val thumbnails: VideoThumbnail,
+    @SerializedName("channelTitle") val channelTitle: String
 ) : Serializable
 
 data class VideoThumbnail(
-    @SerializedName("medium") val medium: Thumbnail
+    @SerializedName("medium") val medium: Thumbnail,
+    @SerializedName("high") val high: Thumbnail
 ) : Serializable
 
 data class Thumbnail(

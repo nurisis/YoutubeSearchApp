@@ -12,8 +12,8 @@ import com.hinuri.youtubesearchapp.R
 fun ImageView.loadImage(@Nullable path:String?) {
     Glide.with(this)
         .load(path ?: "")
-        .placeholder(R.color.grey_500)
-        .error(R.color.grey_500)
+        .placeholder(R.color.whiteGrey)
+        .error(R.color.whiteGrey)
         .centerCrop()
         .into(this)
 }

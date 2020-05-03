@@ -47,15 +47,21 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // 툴바 설정
-        (requireActivity() as? MainActivity)?.setToolBar(getString(R.string.toolbar_search),
-            isHomeButton = false,
-            isCloseButton = false
-        )
+//        (requireActivity() as? MainActivity)?.setToolBar(getString(R.string.toolbar_search),
+//            isHomeButton = false,
+//            isCloseButton = false
+//        )
 
         inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         viewModel.toastMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(requireContext(), getString(it), Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            viewDataBinding?.progressBar?.apply {
+                visibility = if(it) View.VISIBLE else View.GONE
+            }
         })
 
         viewModel.videoList.observe(viewLifecycleOwner, Observer {

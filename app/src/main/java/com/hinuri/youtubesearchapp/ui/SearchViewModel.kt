@@ -20,15 +20,20 @@ class SearchViewModel(
     private val _toastMessage = MutableLiveData<Int>()
     val toastMessage: LiveData<Int> = _toastMessage
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
     private val _videoList = MutableLiveData<List<VideoItem>>()
     val videoList: LiveData<List<VideoItem>> = _videoList
 
     fun searchVideo(query:String) {
         if(query.isBlank()) return
-        Log.d(TAG, "query  : $query")
 
+        _loading.value = true
         viewModelScope.launch {
             youtubeRepository.searchVideos(SearchQuery(query = query)).apply {
+                _loading.value = false
+
                 Log.d(TAG, "searchVideo : $this")
                 when(this) {
                     is Result.Success -> _videoList.value = data.items
