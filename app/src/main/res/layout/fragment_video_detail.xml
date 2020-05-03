@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="videoItem"
+            type="com.hinuri.entity.VideoItem" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/TEXT_H4B"
+        android:padding="@dimen/padding_medium"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:text="@{videoItem.snippet.title}"
+        tools:text="TITLE"/>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        style="@style/TEXT_B1"
+        android:padding="@dimen/padding_medium"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:text="@{videoItem.snippet.description}"
+        tools:text="DESCRIPTION"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
