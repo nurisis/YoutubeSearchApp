@@ -2,6 +2,7 @@ package com.hinuri.data
 
 import com.hinuri.entity.SearchResult
 import com.hinuri.entity.VideoItem
+import com.hinuri.entity.VideoResult
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -21,12 +22,12 @@ import retrofit2.http.Query
 
 interface YoutubeApi {
 
-//    @Headers("Authorization: Bearer ${Constant.GOOGLE_API_KEY}")
     @GET("search")
     suspend fun searchVideo(
-        @Query("key")key:String = "AIzaSyAaxKU1prgcxtnBjOVeLWRKKyj50ogC6Po",
+        @Query("key")key:String = Constant.GOOGLE_API_KEY,
         @Query("part")part:String,
         @Query("q")query:String,
+        @Query("pageToken")pageToken:String,
         @Query("order")order:String,
         @Query("maxResults")maxResults:Int,
         @Query("type")type:String,
@@ -34,4 +35,13 @@ interface YoutubeApi {
         @Query("videoSyndicated")videoSyndicated:String
     ): Response<SearchResult>
 
+    @GET("videos")
+    suspend fun getVideo(
+        @Query("key")key:String = Constant.GOOGLE_API_KEY,
+        @Query("part")part:String,
+//        @Query("chart")chart:String,
+        @Query("pageTokiden")pageToken:String,
+        @Query("maxResults")maxResults:Int,
+        @Query("id")id:String
+    ): Response<VideoResult>
 }

@@ -4,5 +4,5 @@ import com.hinuri.youtubesearchapp.ui.SearchViewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    single { SearchViewModel(get()) }
+    single { SearchViewModel(get(), get()) }
 }

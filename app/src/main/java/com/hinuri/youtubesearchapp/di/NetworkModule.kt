@@ -18,8 +18,9 @@ val networkModule = module {
 
 fun createOkHttp() : OkHttpClient {
     return OkHttpClient.Builder()
-        .connectTimeout(60L, TimeUnit.SECONDS)
-        .readTimeout(30L, TimeUnit.SECONDS)
+        .connectTimeout(30L, TimeUnit.SECONDS)
+        .readTimeout(15L, TimeUnit.SECONDS)
+        .writeTimeout(15L, TimeUnit.SECONDS)
         .build()
 }
 

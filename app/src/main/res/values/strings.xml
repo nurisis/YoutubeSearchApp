@@ -9,5 +9,6 @@
 
     <string name="error_youtube_not_implement">여기서는 제공되지 않는 기능입니다😭</string>
 
+    <string name="error_get_search_result_limit">Youtube 검색 API의 하루 사용량을 초과하였습니다 ... 😨 \n내일.. 다시 시도해주세요🙏</string>
     <string name="error_get_search_result">검색결과를 불러오는데 실패하였습니다😨 \n다시 시도해주세요!🙏</string>
 </resources>

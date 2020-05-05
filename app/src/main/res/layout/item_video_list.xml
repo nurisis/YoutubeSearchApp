@@ -10,7 +10,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/padding_large">
+    android:background="@drawable/item_selector"
+    android:paddingLeft="@dimen/padding_medium"
+    android:paddingRight="@dimen/padding_medium"
+    android:paddingTop="@dimen/padding_small"
+    android:paddingBottom="@dimen/padding_small">
 
     <ImageView
         android:id="@+id/iv_thumbnail"
@@ -28,12 +32,10 @@
         app:layout_constraintTop_toBottomOf="@id/iv_thumbnail"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:paddingLeft="@dimen/padding_medium"
-        android:paddingRight="@dimen/padding_medium"
         android:layout_marginTop="@dimen/padding_small"
         android:maxLines="2"
         android:ellipsize="end"
-        android:text="@{item.snippet.title}"
+        html_text="@{item.snippet.title}"
         tools:text="TITLE"/>
     <TextView
         android:id="@+id/tv_channel"
@@ -41,14 +43,33 @@
         android:layout_width="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:paddingLeft="@dimen/padding_medium"
-        android:paddingRight="@dimen/padding_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="4dp"
         android:maxLines="2"
         android:ellipsize="end"
         android:textColor="@color/grey_500"
         android:text="@{item.snippet.channelTitle}"
         tools:text="CHANNEL"/>
+
+    <TextView
+        style="@style/TEXT_B2"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_channel"
+        app:layout_constraintBottom_toBottomOf="@id/tv_channel"
+        app:layout_constraintLeft_toRightOf="@id/tv_channel"
+        android:layout_marginLeft="@dimen/padding_small"
+        android:textColor="@color/grey_500"
+        app:date_convert="@{item.snippet.publishedAt}"
+        tools:text="TIME"/>
+
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="@drawable/item_selector"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

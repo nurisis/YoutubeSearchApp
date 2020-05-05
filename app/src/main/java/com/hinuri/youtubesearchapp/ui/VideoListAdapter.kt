@@ -14,16 +14,36 @@ import com.hinuri.entity.VideoItem
 import com.hinuri.youtubesearchapp.R
 import com.hinuri.youtubesearchapp.databinding.ItemVideoListBinding
 
-class VideoListAdapter() : ListAdapter<VideoItem, VideoListAdapter.ViewHolder>(
+class VideoListAdapter : ListAdapter<VideoItem, RecyclerView.ViewHolder>(
     VideoListDiffCallback()
 ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+    private val typeProgressBar = 0
+    private val typeItem = 1
+
+    override fun getItemViewType(position: Int): Int {
+        return getItem(position).run {
+            if(etag == null && id == null)
+                typeProgressBar
+            else typeItem
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder  {
+        return if(viewType == typeProgressBar)
+            ProgressbarHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_bottom_progressbar,
+                    parent,
+                    false
+                )
+            )
+        else
+            ViewHolder.from(parent)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if(holder is ViewHolder) holder.bind(getItem(position))
     }
 
     class ViewHolder private constructor(private val binding: ItemVideoListBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
@@ -61,10 +81,12 @@ class VideoListAdapter() : ListAdapter<VideoItem, VideoListAdapter.ViewHolder>(
 
 private class VideoListDiffCallback : DiffUtil.ItemCallback<VideoItem>() {
     override fun areItemsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
-        return oldItem.id.videoId == newItem.id.videoId
+        return oldItem == newItem
     }
 
     override fun areContentsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
         return oldItem == newItem
     }
 }
+
+class ProgressbarHolder(progressBarView: View) : RecyclerView.ViewHolder(progressBarView)

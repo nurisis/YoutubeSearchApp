@@ -4,10 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class VideoItem(
-    @SerializedName("etag") val etag: String,
-    @SerializedName("id") val id: VideoId,
-    @SerializedName("snippet") val snippet: VideoSnippet,
-    @SerializedName("liveBroadcastContent") val liveBroadcastContent: String
+    @SerializedName("etag") val etag: String?,
+    @SerializedName("id") val id: VideoId?,
+    @SerializedName("snippet") val snippet: VideoSnippet?
 ) : Serializable
 
 data class VideoSnippet(
@@ -16,7 +15,9 @@ data class VideoSnippet(
     @SerializedName("title") val title: String,
     @SerializedName("description") val description: String,
     @SerializedName("thumbnails") val thumbnails: VideoThumbnail,
-    @SerializedName("channelTitle") val channelTitle: String
+    @SerializedName("channelTitle") val channelTitle: String,
+    @SerializedName("categoryId") val categoryId: String,
+    @SerializedName("liveBroadcastContent") var liveBroadcastContent: String = "none"
 ) : Serializable
 
 data class VideoThumbnail(
@@ -32,4 +33,12 @@ data class Thumbnail(
 
 data class VideoId(
     @SerializedName("videoId") val videoId: String
+) : Serializable
+
+data class VideoStatistics(
+    @SerializedName("viewCount") val viewCount: String,
+    @SerializedName("likeCount") val likeCount: String,
+    @SerializedName("dislikeCount") val dislikeCount: String,
+    @SerializedName("favoriteCount") val favoriteCount: String,
+    @SerializedName("commentCount") val commentCount: String
 ) : Serializable

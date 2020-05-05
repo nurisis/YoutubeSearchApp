@@ -2,29 +2,25 @@ package com.hinuri.youtubesearchapp.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hinuri.youtubesearchapp.R
+import androidx.recyclerview.widget.RecyclerView
 import com.hinuri.youtubesearchapp.base.BaseFragment
 import com.hinuri.youtubesearchapp.databinding.FragmentSearchBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SearchFragment : BaseFragment<FragmentSearchBinding>() {
-    private val viewModel:SearchViewModel by viewModel()
+    private val viewModel:SearchViewModel by sharedViewModel()
 
     private var listAdapter : VideoListAdapter? = null
     private var inputMethodManager: InputMethodManager? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +28,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     ): View? {
         viewDataBinding =  FragmentSearchBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
+            viewModel = this@SearchFragment.viewModel
 
             etSearch.setOnEditorActionListener(keyboardActionListener)
 
@@ -39,24 +36,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
             rvVideos.apply {
                 adapter = listAdapter
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                addOnScrollListener(scrollListener)
             }
+
+            ivErase.setOnClickListener { etSearch.text.clear() }
         }
         return viewDataBinding?.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        // 툴바 설정
-//        (requireActivity() as? MainActivity)?.setToolBar(getString(R.string.toolbar_search),
-//            isHomeButton = false,
-//            isCloseButton = false
-//        )
-
         inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        viewModel.toastMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(), getString(it), Toast.LENGTH_LONG).show()
-        })
 
         viewModel.loading.observe(viewLifecycleOwner, Observer {
             viewDataBinding?.progressBar?.apply {
@@ -65,8 +55,23 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         })
 
         viewModel.videoList.observe(viewLifecycleOwner, Observer {
+            Log.d("LOG>>", "리스트 갯수 : ${it.size}")
             listAdapter?.submitList(it)
         })
+    }
+
+    private val scrollListener = object : RecyclerView.OnScrollListener(){
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            var lastVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition() ?: 0
+            var itemTotalCount = recyclerView.adapter?.itemCount ?: 0
+
+            // 마지막 바닥일 때
+            if(lastVisiblePosition+1 == itemTotalCount) {
+                viewModel.loadModeVideo()
+            }
+        }
     }
 
     /**
@@ -80,6 +85,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         }
 
         return@OnEditorActionListener true
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putAll(viewModel.getVMDataToSave())
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        viewModel.restoreVMData(savedInstanceState)
     }
 
     override fun onDestroyView() {

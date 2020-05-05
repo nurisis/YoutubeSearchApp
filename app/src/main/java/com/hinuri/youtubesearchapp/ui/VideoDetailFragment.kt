@@ -1,6 +1,7 @@
 package com.hinuri.youtubesearchapp.ui
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,22 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import com.hinuri.entity.VideoItem
 import com.hinuri.youtubesearchapp.R
 import com.hinuri.youtubesearchapp.base.BaseFragment
 import com.hinuri.youtubesearchapp.databinding.FragmentVideoDetailBinding
-import kotlinx.android.synthetic.main.fragment_video_detail.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
-    private val viewModel:SearchViewModel by viewModel()
-    private var videoItem:VideoItem? = null
+    private val viewModel:SearchViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.apply {
-            videoItem = getSerializable("item") as VideoItem
+            // tODO
+            val videoItem = getSerializable("item") as VideoItem
+            viewModel.getVideo(videoId = videoItem?.id?.videoId ?: "")
         }
     }
 
@@ -33,7 +33,7 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
     ): View? {
         viewDataBinding =  FragmentVideoDetailBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
-            videoItem = this@VideoDetailFragment.videoItem
+            viewModel = this@VideoDetailFragment.viewModel
         }
 
         setUpWebView()
@@ -44,11 +44,7 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.toastMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(), getString(it), Toast.LENGTH_LONG).show()
-        })
-
-        viewDataBinding?.webview?.loadUrl("https://www.youtube.com/embed/${videoItem?.id?.videoId ?: ""}?loop=1&playlist=${videoItem?.id?.videoId ?: ""}".also {
+        viewDataBinding?.webview?.loadUrl("https://www.youtube.com/embed/${viewModel.videoDetailItemId}?loop=1&playlist=${viewModel.videoDetailItemId}".also {
             Log.d("LOG>>", "동영상 url : $it")
         })
     }
@@ -56,6 +52,7 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
 
     private fun setUpWebView() {
         viewDataBinding?.webview?.apply {
+            setBackgroundColor(Color.BLACK)
             webViewClient = customWebViewClient
             setNetworkAvailable(true) // Informs WebView of the network state
             clearCache(true)
