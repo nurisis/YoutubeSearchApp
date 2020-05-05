@@ -12,4 +12,5 @@
     <color name="white_alpha_0">#00FFFFFF</color>
     <color name="black_alpha_20">#33000000</color>
     <color name="black_alpha_6">#10000000</color>
+    <color name="black_alpha_13">#20000000</color>
 </resources>

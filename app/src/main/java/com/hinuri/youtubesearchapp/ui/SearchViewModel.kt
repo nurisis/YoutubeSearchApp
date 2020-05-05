@@ -31,7 +31,7 @@ class SearchViewModel(
     private val _videoList = MutableLiveData<List<VideoItem>>()
     val videoList: LiveData<List<VideoItem>> = _videoList
 
-    private var query : String? = null
+    var query : String? = null
     private var nextPageToken:String? = null
     // 페이징 처리를 위한
     private var isLastData = true
@@ -146,8 +146,7 @@ class SearchViewModel(
                                 add(VideoItem(null, null, null))
                         }
 
-                        // TODO ::
-//                        isLastData = true
+                        isLastData = true
                         gridLockView = false
                     }
                 }
@@ -155,7 +154,6 @@ class SearchViewModel(
         }
     }
 
-    // TODO :: 여기서부터 구현해야.
     fun getVideo(videoId : String) {
         if(videoId.isEmpty()) return
 

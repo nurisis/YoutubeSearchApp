@@ -42,19 +42,19 @@ fun TextView.textFromHtml(html:String?) {
             Html.fromHtml(html)
 }
 
-@BindingAdapter("date_format")
-fun TextView.convertDateFormat(date:String?) {
+@BindingAdapter("published_date_convert")
+fun TextView.convertPublishedDate(date:String?) {
     if(date == null || date?.isEmpty()) {
         text = ""
         return
     }
 
-    try {
+    text = try {
         val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA)
-        text = dateFormat.format(SimpleDateFormat("yyyy.MM.dd").parse(date.split("T")[0])) ?: date
+        "게시일: "+dateFormat.format(SimpleDateFormat("yyyy-MM-dd").parse(date.split("T")[0])) ?: date
     }catch (e:Exception) {
         Log.e("LOG>>", "date parser error : $e")
-        text = date
+        date
     }
 }
 

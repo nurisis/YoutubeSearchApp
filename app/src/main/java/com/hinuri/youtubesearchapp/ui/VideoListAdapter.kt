@@ -81,11 +81,11 @@ class VideoListAdapter : ListAdapter<VideoItem, RecyclerView.ViewHolder>(
 
 private class VideoListDiffCallback : DiffUtil.ItemCallback<VideoItem>() {
     override fun areItemsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
-        return oldItem == newItem
+        return oldItem.id?.equals(newItem.id) ?: false
     }
 
     override fun areContentsTheSame(oldItem: VideoItem, newItem: VideoItem): Boolean {
-        return oldItem == newItem
+        return oldItem.id?.equals(newItem.id) ?: false
     }
 }
 

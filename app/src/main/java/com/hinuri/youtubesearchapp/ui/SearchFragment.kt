@@ -26,6 +26,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("LOG>>", "** onCreateView")
         viewDataBinding =  FragmentSearchBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@SearchFragment.viewModel
@@ -79,6 +80,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
      * */
     private val keyboardActionListener = TextView.OnEditorActionListener { v, actionId, _ ->
         if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+            Log.d("LOG>>", "** keyboardActionListener")
             viewModel.searchVideo(viewDataBinding?.etSearch?.text?.toString() ?: "")
             // 키보드 숨김
             inputMethodManager?.hideSoftInputFromWindow(v.windowToken, 0)
@@ -95,6 +97,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.restoreVMData(savedInstanceState)
+
+        if(viewModel.query?.isNotEmpty() == true) {
+            Log.d("LOG>>", "** onViewStateRestored")
+            viewDataBinding?.etSearch?.apply {
+                Log.d("LOG>>", "** onViewStateRestored clear focus!")
+                clearFocus()
+                inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
+            }
+        }
     }
 
     override fun onDestroyView() {
