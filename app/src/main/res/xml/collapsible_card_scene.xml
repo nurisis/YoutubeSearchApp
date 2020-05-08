@@ -21,7 +21,7 @@
         motion:constraintSetStart="@+id/start"
         motion:duration="300">
         <OnClick
-            motion:targetId="@id/rl_header"/>
+            motion:targetId="@id/header_container"/>
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -37,13 +37,13 @@
         <Constraint
         android:id="@id/tv_date"
         android:visibility="visible">
-        <Layout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_medium"
-            motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/view2" />
-    </Constraint>
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_medium"
+                motion:layout_constraintLeft_toLeftOf="parent"
+                motion:layout_constraintTop_toBottomOf="@id/view2" />
+        </Constraint>
 
         <Constraint
             android:id="@id/tv_desc"

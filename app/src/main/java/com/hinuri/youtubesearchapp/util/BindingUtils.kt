@@ -16,6 +16,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Exception
 
+@BindingAdapter("number_convert_short")
+fun TextView.numberConvertShort(number: String?) {
+    try {
+        if(number == null) {
+            text = ""
+            return
+        }
+
+        text = DecimalFormat("###,###").format(number.toLong())
+    }
+    catch (e: Exception) {
+        text = ""
+    }
+}
+
 @BindingAdapter("view_count_convert")
 fun TextView.viewCountConverter(number: String?) {
     try {
@@ -44,7 +59,7 @@ fun TextView.textFromHtml(html:String?) {
 
 @BindingAdapter("published_date_convert")
 fun TextView.convertPublishedDate(date:String?) {
-    if(date == null || date?.isEmpty()) {
+    if(date == null || date.isEmpty()) {
         text = ""
         return
     }
@@ -60,7 +75,7 @@ fun TextView.convertPublishedDate(date:String?) {
 
 @BindingAdapter("date_convert")
 fun TextView.convertDate(date:String?) {
-    if(date == null || date?.isEmpty()) {
+    if(date == null || date.isEmpty()) {
         text = ""
         return
     }

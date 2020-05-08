@@ -2,6 +2,7 @@ package com.hinuri.youtubesearchapp.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,11 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
         viewDataBinding =  FragmentVideoDetailBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@VideoDetailFragment.viewModel
+
+            scrollview.setOnTouchListener { _, _ ->
+                // 상세설명이 펼쳐져 있을 때만 스크롤 가능하도록.
+                return@setOnTouchListener tvDesc.visibility != View.VISIBLE
+            }
         }
 
         setUpWebView()
@@ -42,8 +48,7 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        // TODO ::여기 지워주자
-//        viewDataBinding?.webview?.loadUrl("https://www.youtube.com/embed/${viewModel.videoDetailItemId}?loop=1&playlist=${viewModel.videoDetailItemId}")
+        // 유튜브 영상 로딩 (embedded 영상 url)
         viewDataBinding?.webview?.loadUrl(  getString(R.string.embedded_video_url, viewModel.videoDetailItemId, viewModel.videoDetailItemId))
     }
 
@@ -56,12 +61,6 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
             webViewClient = customWebViewClient
             setNetworkAvailable(true)
             clearCache(true)
-            // TODO :: 이거 필요없음?
-            webChromeClient = object : WebChromeClient() {
-                override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                    super.onProgressChanged(view, newProgress)
-                }
-            }
         }
 
         viewDataBinding?.webview?.settings?.apply {

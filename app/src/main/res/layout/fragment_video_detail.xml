@@ -5,10 +5,11 @@
             name="viewModel"
             type="com.hinuri.youtubesearchapp.ui.SearchViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/white"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
@@ -16,29 +17,22 @@
         <WebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="250dp"/>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/webview"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:overScrollMode="never"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
 
             <androidx.constraintlayout.motion.widget.MotionLayout
                 android:id="@+id/motionLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="@dimen/padding_medium"
                 app:layoutDescription="@xml/collapsible_card_scene">
 
+<!--                ========= 헤더 (제목 및 조회수) ============-->
                 <ImageView
                     android:id="@+id/iv_arrow"
                     android:layout_width="24dp"
@@ -46,33 +40,76 @@
                     android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
-
-                <RelativeLayout
-                    android:id="@+id/rl_header"
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/TEXT_H3B"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/item_selector"
-                    android:layout_marginRight="@dimen/padding_small"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@id/iv_arrow"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <TextView
-                        android:id="@+id/tv_title"
-                        style="@style/TEXT_H3B"
-                        android:clickable="false"
-                        android:layout_marginRight="@dimen/padding_small"
-                        android:text='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).snippet.title : ""}'
-                        tools:text="TITLE"/>
-                    <TextView
-                        android:id="@+id/tv_view_count"
-                        style="@style/TEXT_B2"
-                        android:clickable="false"
-                        android:layout_marginTop="@dimen/padding_small"
-                        android:layout_below="@id/tv_title"
-                        android:textColor="@color/grey_500"
-                        view_count_convert='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).statistics.viewCount : ""}'
-                        tools:text="VIEW COUNT"/>
-                </RelativeLayout>
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:text='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).snippet.title : ""}'
+                    tools:text="TITLE"/>
+                <TextView
+                    android:id="@+id/tv_view_count"
+                    style="@style/TEXT_B2"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:textColor="@color/grey_500"
+                    view_count_convert='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).statistics.viewCount : ""}'
+                    tools:text="VIEW COUNT"/>
+                <View
+                    android:id="@+id/header_container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/item_selector"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_title"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_view_count"/>
+
+<!--                ========= 좋아요 / 싫어요 갯수 ========-->
+                <ImageView
+                    android:id="@+id/iv_like"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:src="@drawable/ic_like_black_24dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/iv_dislike"
+                    app:layout_constraintTop_toBottomOf="@id/tv_view_count"/>
+                <TextView
+                    android:id="@+id/tv_like"
+                    style="@style/TEXT_B2"
+                    android:layout_width="wrap_content"
+                    tools:text="LIKE"
+                    android:textColor="@color/grey_500"
+                    number_convert_short='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).statistics.likeCount : ""}'
+                    app:layout_constraintLeft_toLeftOf="@id/iv_like"
+                    app:layout_constraintRight_toRightOf="@id/iv_like"
+                    app:layout_constraintTop_toBottomOf="@id/iv_like" />
+
+                <ImageView
+                    android:id="@+id/iv_dislike"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:layout_marginLeft="@dimen/padding_large"
+                    android:src="@drawable/ic_dislike_black_24dp"
+                    app:layout_constraintLeft_toRightOf="@id/iv_like"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_view_count"/>
+                <TextView
+                    android:id="@+id/tv_dislike"
+                    style="@style/TEXT_B2"
+                    android:layout_width="wrap_content"
+                    tools:text="DISLIKE"
+                    android:textColor="@color/grey_500"
+                    number_convert_short='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).statistics.dislikeCount : ""}'
+                    app:layout_constraintLeft_toLeftOf="@id/iv_dislike"
+                    app:layout_constraintRight_toRightOf="@id/iv_dislike"
+                    app:layout_constraintTop_toBottomOf="@id/iv_dislike" />
 
                 <View
                     android:id="@+id/view"
@@ -82,7 +119,9 @@
                     android:layout_marginTop="@dimen/padding_medium"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rl_header"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_dislike"/>
+
+<!--                ========= 채널 정보 ==========-->
                 <TextView
                     android:id="@+id/tv_channel"
                     style="@style/TEXT_B1"
@@ -102,6 +141,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_channel"/>
 
+<!--                ======= 상세정보 (게시일, 내용) ============-->
                 <TextView
                     android:id="@+id/tv_date"
                     style="@style/TEXT_B2"
@@ -125,5 +165,5 @@
             </androidx.constraintlayout.motion.widget.MotionLayout>
         </androidx.core.widget.NestedScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

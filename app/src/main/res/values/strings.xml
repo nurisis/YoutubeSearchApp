@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">YoutubeSearchApp</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-
     <string name="search_video_edit_text_hint">YouTube 검색</string>
     <string name="search_video_no_result">검색 결과가 없습니다 😭😭</string>
     <string name="search_video_not_yet">원하는 유튜브 동영상을 검색해보세요! 🤘🙌☝️</string>
@@ -21,7 +19,7 @@
 
     <string name="error_youtube_not_implement">여기서는 제공되지 않는 기능입니다😭</string>
 
-    <string name="error_get_search_result_limit">Youtube 검색 API의 하루 사용량을 초과하였습니다 ... 😨 \n내일.. 다시 시도해주세요🙏</string>
+    <string name="error_get_search_result_limit">Youtube 검색 API의 하루 사용량을 초과하였습니다 ... 😨 \n내일 오후 4시에.. 다시 시도해주세요🙏</string>
     <string name="error_get_search_result">검색결과를 불러오는데 실패하였습니다😨 \n다시 시도해주세요!🙏</string>
     <string name="error_get_video_info">영상 정보를 불러오는데 실패하였습니다😨</string>
 </resources>

@@ -90,14 +90,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         viewModel.restoreVMData(savedInstanceState)
     }
 
-    override fun onPause() {
-        // 키보드 내림
-        viewDataBinding?.run {
-            inputMethodManager?.hideSoftInputFromWindow(root.windowToken, 0)
-        }
-        super.onPause()
-    }
-
     override fun onDestroyView() {
         listAdapter = null
         inputMethodManager = null
