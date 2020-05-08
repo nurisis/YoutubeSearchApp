@@ -1,15 +1,12 @@
 package com.hinuri.youtubesearchapp.ui
 
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.Toast
-import com.hinuri.entity.VideoItem
 import com.hinuri.youtubesearchapp.R
 import com.hinuri.youtubesearchapp.base.BaseFragment
 import com.hinuri.youtubesearchapp.databinding.FragmentVideoDetailBinding
@@ -20,10 +17,11 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.refreshVideoDetailData()
+
+        // 리스트 화면으로 부터 videoId 전달받음. => 이 videoId로 영상 상세 정보 불러옴.
         arguments?.apply {
-            // tODO
-            val videoItem = getSerializable("item") as VideoItem
-            viewModel.getVideo(videoId = videoItem?.id?.videoId ?: "")
+            viewModel.getVideo(videoId = getString(EXTRA_VIDEO_ID, ""))
         }
     }
 
@@ -44,18 +42,21 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewDataBinding?.webview?.loadUrl("https://www.youtube.com/embed/${viewModel.videoDetailItemId}?loop=1&playlist=${viewModel.videoDetailItemId}".also {
-            Log.d("LOG>>", "동영상 url : $it")
-        })
+        // TODO ::여기 지워주자
+//        viewDataBinding?.webview?.loadUrl("https://www.youtube.com/embed/${viewModel.videoDetailItemId}?loop=1&playlist=${viewModel.videoDetailItemId}")
+        viewDataBinding?.webview?.loadUrl(  getString(R.string.embedded_video_url, viewModel.videoDetailItemId, viewModel.videoDetailItemId))
     }
 
-
+    /**
+     * 유튜브 영상을 보여줄 webview 셋팅 작업
+     * */
     private fun setUpWebView() {
         viewDataBinding?.webview?.apply {
             setBackgroundColor(Color.BLACK)
             webViewClient = customWebViewClient
-            setNetworkAvailable(true) // Informs WebView of the network state
+            setNetworkAvailable(true)
             clearCache(true)
+            // TODO :: 이거 필요없음?
             webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)
@@ -63,7 +64,6 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
             }
         }
 
-        // Setting of webview
         viewDataBinding?.webview?.settings?.apply {
             javaScriptEnabled = true
             loadWithOverviewMode = true // Allow a metatag
@@ -75,21 +75,13 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
     }
 
     private val customWebViewClient = object : WebViewClient(){
-        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-            super.onPageStarted(view, url, favicon)
-        }
-
-        override fun onPageFinished(view: WebView?, url: String?) {
-            super.onPageFinished(view, url)
-        }
-
         override fun shouldOverrideUrlLoading(
             view: WebView?,
             request: WebResourceRequest?
         ): Boolean {
+            // embedded 영상이 아닌 유튜브 웹페이지로 이동하는 경우는 막음. 왜냐하면 여기서의 웹뷰 용도는 유튜브의 embedded 영상을 보여주기 위한 것이기 때문.
             if(request?.url?.path?.contains("embed") != true) {
                 Toast.makeText(requireContext(), getString(R.string.error_youtube_not_implement), Toast.LENGTH_LONG).show()
-                Log.e("LOG>>","유튜브로 넘어가는 url >> ${request?.url?.path}")
                 return true
             }
 
@@ -97,8 +89,4 @@ class VideoDetailFragment : BaseFragment<FragmentVideoDetailBinding>() {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = VideoDetailFragment()
-    }
 }

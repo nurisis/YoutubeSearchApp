@@ -1,108 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout>
     <data>
         <variable
             name="viewModel"
             type="com.hinuri.youtubesearchapp.ui.SearchViewModel" />
     </data>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
-
-    <WebView
-        android:id="@+id/webview"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:overScrollMode="never"
-        android:fillViewport="true">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <WebView
+            android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_medium">
+            android:layout_height="250dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/TEXT_H3B"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@{viewModel.videoDetailItem.items.get(0).snippet.title}"
-                tools:text="TITLE"/>
-            <TextView
-                android:id="@+id/tv_view_count"
-                style="@style/TEXT_B2"
-                android:layout_marginTop="@dimen/padding_small"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title"
-                android:textColor="@color/grey_500"
-                view_count_convert="@{viewModel.videoDetailItem.items.get(0).statistics.viewCount}"
-                tools:text="VIEW COUNT"/>
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/webview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:overScrollMode="never"
+            android:fillViewport="true">
 
-            <View
-                android:id="@+id/view"
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/motionLayout"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/whiteGrey"
-                android:layout_marginTop="@dimen/padding_medium"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_view_count"/>
-            <TextView
-                android:id="@+id/tv_channel"
-                style="@style/TEXT_B1"
-                android:layout_marginTop="@dimen/padding_medium"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view"
-                android:text="@{viewModel.videoDetailItem.items.get(0).snippet.channelTitle}"
-                tools:text="CHANNEL TITLE"/>
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/whiteGrey"
-                android:layout_marginTop="@dimen/padding_medium"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_channel"/>
+                android:layout_height="match_parent"
+                android:padding="@dimen/padding_medium"
+                app:layoutDescription="@xml/collapsible_card_scene">
 
-            <TextView
-                android:id="@+id/tv_date"
-                style="@style/TEXT_B2"
-                android:layout_marginTop="@dimen/padding_medium"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view2"
-                published_date_convert="@{viewModel.videoDetailItem.items.get(0).snippet.publishedAt}"
-                android:textColor="@color/grey_500"
-                tools:text="DATE"/>
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                android:id="@+id/tv_desc"
-                style="@style/TEXT_B1"
-                android:layout_marginTop="@dimen/padding_large"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_date"
-                android:textColor="@color/grey_500"
-                android:text="@{viewModel.videoDetailItem.items.get(0).snippet.description}"
-                tools:text="DESCRIPTION"/>
+                <RelativeLayout
+                    android:id="@+id/rl_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_selector"
+                    android:layout_marginRight="@dimen/padding_small"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/iv_arrow"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <TextView
+                        android:id="@+id/tv_title"
+                        style="@style/TEXT_H3B"
+                        android:clickable="false"
+                        android:layout_marginRight="@dimen/padding_small"
+                        android:text='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).snippet.title : ""}'
+                        tools:text="TITLE"/>
+                    <TextView
+                        android:id="@+id/tv_view_count"
+                        style="@style/TEXT_B2"
+                        android:clickable="false"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:layout_below="@id/tv_title"
+                        android:textColor="@color/grey_500"
+                        view_count_convert='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).statistics.viewCount : ""}'
+                        tools:text="VIEW COUNT"/>
+                </RelativeLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/whiteGrey"
+                    android:layout_marginTop="@dimen/padding_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rl_header"/>
+                <TextView
+                    android:id="@+id/tv_channel"
+                    style="@style/TEXT_B1"
+                    android:layout_marginTop="@dimen/padding_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view"
+                    android:text='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).snippet.channelTitle : ""}'
+                    tools:text="CHANNEL TITLE"/>
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/whiteGrey"
+                    android:layout_marginTop="@dimen/padding_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_channel"/>
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/TEXT_B2"
+                    android:layout_marginTop="@dimen/padding_medium"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view2"
+                    published_date_convert='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).snippet.publishedAt : ""}'
+                    android:textColor="@color/grey_500"
+                    tools:text="DATE"/>
+
+                <TextView
+                    android:id="@+id/tv_desc"
+                    style="@style/TEXT_B1"
+                    android:layout_marginTop="@dimen/padding_large"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_date"
+                    android:textColor="@color/grey_500"
+                    android:text='@{viewModel.videoDetailItem!=null ? viewModel.videoDetailItem.items.get(0).snippet.description : ""}'
+                    tools:text="DESCRIPTION"/>
+
+            </androidx.constraintlayout.motion.widget.MotionLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

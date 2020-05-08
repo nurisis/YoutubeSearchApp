@@ -24,10 +24,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TEXT_H4" parent="TEXT_COMMON_BLACK">
-        <item name="android:textSize">14sp</item>
-    </style>
-
     <style name="TEXT_H4B" parent="TEXT_COMMON_BLACK">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
@@ -39,9 +35,6 @@
     </style>
     <style name="TEXT_B2" parent="TEXT_COMMON_BLACK">
         <item name="android:textSize">12sp</item>
-    </style>
-    <style name="TEXT_B3" parent="TEXT_COMMON_BLACK">
-        <item name="android:textSize">10sp</item>
     </style>
 
 </resources>

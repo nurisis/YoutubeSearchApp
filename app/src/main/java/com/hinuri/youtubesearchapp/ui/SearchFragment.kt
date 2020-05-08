@@ -2,7 +2,6 @@ package com.hinuri.youtubesearchapp.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("LOG>>", "** onCreateView")
         viewDataBinding =  FragmentSearchBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = this@SearchFragment.viewModel
@@ -49,18 +47,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
         super.onActivityCreated(savedInstanceState)
         inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        viewModel.loading.observe(viewLifecycleOwner, Observer {
-            viewDataBinding?.progressBar?.apply {
-                visibility = if(it) View.VISIBLE else View.GONE
-            }
-        })
-
         viewModel.videoList.observe(viewLifecycleOwner, Observer {
-            Log.d("LOG>>", "리스트 갯수 : ${it.size}")
             listAdapter?.submitList(it)
         })
     }
 
+    // 영상 페이징 처리를 위한 스크롤 리스너
     private val scrollListener = object : RecyclerView.OnScrollListener(){
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -68,10 +60,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
             var lastVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastCompletelyVisibleItemPosition() ?: 0
             var itemTotalCount = recyclerView.adapter?.itemCount ?: 0
 
-            // 마지막 바닥일 때
-            if(lastVisiblePosition+1 == itemTotalCount) {
+            // 바닥일 때
+            if(lastVisiblePosition+1 == itemTotalCount)
                 viewModel.loadModeVideo()
-            }
         }
     }
 
@@ -80,10 +71,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
      * */
     private val keyboardActionListener = TextView.OnEditorActionListener { v, actionId, _ ->
         if(actionId == EditorInfo.IME_ACTION_SEARCH) {
-            Log.d("LOG>>", "** keyboardActionListener")
             viewModel.searchVideo(viewDataBinding?.etSearch?.text?.toString() ?: "")
             // 키보드 숨김
             inputMethodManager?.hideSoftInputFromWindow(v.windowToken, 0)
+            viewDataBinding?.etSearch?.clearFocus()
         }
 
         return@OnEditorActionListener true
@@ -97,25 +88,19 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         viewModel.restoreVMData(savedInstanceState)
+    }
 
-        if(viewModel.query?.isNotEmpty() == true) {
-            Log.d("LOG>>", "** onViewStateRestored")
-            viewDataBinding?.etSearch?.apply {
-                Log.d("LOG>>", "** onViewStateRestored clear focus!")
-                clearFocus()
-                inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
-            }
+    override fun onPause() {
+        // 키보드 내림
+        viewDataBinding?.run {
+            inputMethodManager?.hideSoftInputFromWindow(root.windowToken, 0)
         }
+        super.onPause()
     }
 
     override fun onDestroyView() {
         listAdapter = null
         inputMethodManager = null
         super.onDestroyView()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = SearchFragment()
     }
 }

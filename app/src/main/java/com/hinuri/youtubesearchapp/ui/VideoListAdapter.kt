@@ -14,11 +14,13 @@ import com.hinuri.entity.VideoItem
 import com.hinuri.youtubesearchapp.R
 import com.hinuri.youtubesearchapp.databinding.ItemVideoListBinding
 
+const val EXTRA_VIDEO_ID = "videoId"
+
 class VideoListAdapter : ListAdapter<VideoItem, RecyclerView.ViewHolder>(
     VideoListDiffCallback()
 ) {
 
-    private val typeProgressBar = 0
+    private val typeProgressBar = 0 // 페이징 시 보이는 하단 프로그래스 바
     private val typeItem = 1
 
     override fun getItemViewType(position: Int): Int {
@@ -57,11 +59,12 @@ class VideoListAdapter : ListAdapter<VideoItem, RecyclerView.ViewHolder>(
             }.executePendingBindings()
         }
 
+        // 리스트 클릭 시 해당 비디오의 상세화면으로 이동 (videoId 전달)
         override fun onClick(v: View?) {
             v?.let {
                 it.findNavController().navigate(
                     R.id.action_searchFragment_to_videoDetailFragment,
-                    Bundle().apply { putSerializable("item", binding.item) }
+                    Bundle().apply { putString(EXTRA_VIDEO_ID, binding.item?.id?.videoId) }
                 )
             }
         }

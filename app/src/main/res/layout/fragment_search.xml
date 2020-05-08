@@ -16,9 +16,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="0dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -44,7 +42,7 @@
                     android:imeOptions="actionSearch"
                     android:background="@null"
                     android:padding="@dimen/padding_small"
-                    android:hint="YouTube 검색"><requestFocus/></EditText>
+                    android:hint="@string/search_video_edit_text_hint"><requestFocus/></EditText>
                 <ImageView
                     android:id="@+id/iv_erase"
                     android:layout_width="wrap_content"
@@ -62,22 +60,30 @@
         android:id="@+id/rv_videos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="ifContentScrolls"
         android:visibility="@{!viewModel.videoList.empty}"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <TextView
-        style="@style/TEXT_H3B"
-        android:text="원하는 결과가 없습니다 ㅜㅜ"
+        style="@style/TEXT_H3"
         android:gravity="center"
-        android:layout_gravity="center"
-        android:visibility="@{viewModel.videoList.empty}"/>
+        android:layout_margin="@dimen/padding_medium"
+        android:layout_marginLeft="@dimen/padding_medium"
+        android:layout_marginRight="@dimen/padding_medium"
+        android:padding="32dp"
+        android:textColor="@color/grey_500"
+        android:text="@{viewModel.videoList == null ? @string/search_video_not_yet : @string/search_video_no_result}"
+        android:visibility="@{viewModel.videoList == null || viewModel.videoList.empty}"
+        android:layout_gravity="bottom"
+        app:layout_anchor="@id/appbar"
+        app:layout_anchorGravity="bottom"/>
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="@{viewModel.loading.booleanValue()}"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

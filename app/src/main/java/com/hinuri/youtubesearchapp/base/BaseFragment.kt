@@ -19,17 +19,6 @@ abstract class BaseFragment<T> : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val toolbarClose : ImageView? = view.findViewById(R.id.toolbar_close)
-        toolbarClose?.let {
-            it.setOnClickListener {
-                setToolbarClose()
-            }
-        }
-    }
-
     /**
      * 툴바 우측의 'x' 클릭 시
      * */
@@ -43,20 +32,6 @@ abstract class BaseFragment<T> : Fragment() {
     internal open fun setToolbarBackButton() {
         requireActivity().onBackPressed()
     }
-
-//    fun checkNetworkState() : Boolean {
-//        context?.apply {
-//            // 1. 가장 먼저 인터넷 연결 체크 (해당 액티비티에 처음 들어왔을 때만.)
-//            if(!Constant.isInternetConnect(this)) {
-//                return false
-//            }
-//
-//            return true
-//        }
-//
-//        return false
-//    }
-
     // 액션바 아이콘 리스너
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
