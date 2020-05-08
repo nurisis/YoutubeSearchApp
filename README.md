@@ -3,7 +3,7 @@
 
 
 ### Open API
-* Youtube Data API
+* [Youtube Data API](https://developers.google.com/youtube/v3)
   - 참고 : 하루 API를 사용할 수 있는 할당량이 정해져 있으며, 매일 한국시간으로 오후 4시에 초기화 됨.
 
 ### Library
