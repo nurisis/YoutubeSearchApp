@@ -1,23 +1,23 @@
 # YoutubeSearchApp
-검색을 통해 보고싶은 유튜브 동영상들을 찾고, 실제로 영상을 재생할 수 있는 안드로이드 앱 🙌👀
+An android app that can find YouTube videos you want to watch through search and actually play videos 🙌👀
 
 
 ### Open API
 * [Youtube Data API](https://developers.google.com/youtube/v3)
-  - 참고 : 하루 API를 사용할 수 있는 할당량이 정해져 있으며, 매일 한국시간으로 오후 4시에 초기화 됨.
+  - Note: The quota for using the API per day is fixed, and it is initialized at midnight PT every day.
 
 ### Library
 * Jetpack Navigation
-   - 사용 이유 : 프래그먼트 간의 이동을 간편하게 처리하기 위해. 또한 전체 플로우를 한 눈에 보기 좋음.
+   - Reason for use: To simplify the movement between fragments. Also, the entire flow is great at a glance.
  
  * Koin
-   - 사용 이유 : 의존성 주입을 위해. 의존성 주입은 아래와 같은 이유로 사용.
-     1) 테스트 및 리팩토링 용이
-     2) 코드 가독성 높여줌
-     3) 객체의 생성과 사용의 분리
+   - Reason for use: For dependency injection. Dependency injection is used for the following reasons.
+     1) Easy to test and refactor
+     2) Enhances code readability
+     3) Separation of object creation and use
    
 * Retrofit
-   - 사용 이유 : 네트워크 통신 시 속도, 가독성, 편의성 등을 위해.
+   - Reason for use: For speed, readability and convenience in network communication.
    
 * Glide
-   - 사용 이유 : Url 이미지를 안정적으로 로딩해주며, 로딩 실패처리/Out of Memory/캐싱 등의 이미지와 관련된 처리를 알아서 해주기 때문.
+   - Reason for use: Because it loads url images stably and handles image-related processing such as loading failure processing / out of memory / caching.
